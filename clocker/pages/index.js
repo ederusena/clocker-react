@@ -14,6 +14,7 @@ import {
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+// import firebase from '../config/firebase';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email('E-mail inválido').required('Preenchimento obrigatório'),
@@ -33,7 +34,7 @@ export default function Home() {
     isSubmitting,
   } = useFormik({
     onSubmit: (values, form) =>  {
-      console.log('onSubmit', values, form);
+      console.log(values);
     },
     validationSchema,
     initialValues: {
