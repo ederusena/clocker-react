@@ -1,6 +1,5 @@
 import { Logo } from '../components/Logo';
 import Link from 'next/link';
-
 import {
   Box,
   Text,
@@ -21,6 +20,7 @@ import firebase from '../config/firebase';
 const validationSchema = yup.object().shape({
   email: yup.string().email('E-mail inválido').required('Preenchimento obrigatório'),
   password: yup.string().required('Preenchimento obrigatório'),
+  username: yup.string().required('Preenchimento obrigatório'),
 });
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
     onSubmit: async(values, form) =>  {
       console.log(values, form);
       try {
-        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+        const user = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
         console.log(user)
         form.resetForm();
       }catch(error) {
@@ -71,11 +71,23 @@ export default function Home() {
           {touched.password && <FormHelperText textColor="#e74c3c">{errors.password}</FormHelperText> }
         </FormControl>
 
+        <FormControl id="username" p={4} isRequired>
+          
+          <FormControl id="username" p={4} isRequired>
+            <InputGroup size='lg'>
+              <InputLeftAddon children='clocker.work'/>
+              <Input type="username" value={values.username} onChange={handleChange} onBlur={handleBlur}/>
+            </InputGroup>
+            {touched.username && <FormHelperText textColor="#e74c3c">{errors.username}</FormHelperText> }
+          </FormControl>
+        </FormControl>
+
         <Box p={4}>
-          <Button colorScheme="blue" width="100%" onClick={handleSubmit} isLoading={isSubmitting}>Entrar</Button>
+          <Button colorScheme="blue" width="100%" onClick={handleSubmit} isLoading={isSubmitting}>Cadastrar</Button>
         </Box>
       </Box>
-      <Link href="/signup">Ainda não tem uma conta? Cadastra-se!</Link>
+      <Link href="/">Já tem uma conta? Acesse!</Link>
+
     </Container>
   )
 }
